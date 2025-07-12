@@ -24,7 +24,7 @@ env/
 *.joblib
 *.pkl
 usecases/*/model.joblib
-usecases/*/model_metrics.csv
+usecases/*/experiment_*.json
 usecases/*/*.csv
 usecases/*/__pycache__/
 
