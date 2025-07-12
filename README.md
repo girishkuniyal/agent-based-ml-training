@@ -1,6 +1,6 @@
 # ⚡ Text2Model: Describe your use case, get a deployed model
 
-**Text2Model** lets you build production-grade machine learning models from just plain English. Upload your dataset, describe your intent, and we’ll take care of the rest — from generating model code to training, tuning, and deploying your model as a fully working REST API.
+**Text2Model (Agentic ML Trainer)** lets you build production-grade machine learning models from just plain English. Upload your dataset, describe your intent, and we’ll take care of the rest — from generating model code to training, tuning, and deploying your model as a fully working REST API.
 
 🚀 Say goodbye to boilerplate and infrastructure headaches — Text2Model is the fastest way to go from CSV to prediction endpoint.
 
