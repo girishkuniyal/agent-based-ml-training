@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "agentic-ml-platform"
+version = "0.1.0"
+description = "Streamlit + FastAPI based agentic ML training and deployment platform"
+authors = ["Girish Chandra Kuniyal <girishkuniyal@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "utils"}, {include = "main.py"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+# Core App
+streamlit = "^1.25"
+fastapi = "^0.100"
+uvicorn = {extras = ["standard"], version = "^0.23"}
+
+# ML & Data
+pandas = "^2.0"
+scikit-learn = "^1.3"
+joblib = "^1.3"
+
+# Prompting & Agent
+langchain = "^0.1.15"
+openai = "^1.12.0"
+jinja2 = "^3.1"
+
+# Pydantic & SQLite
+pydantic = "^2.4"
+httpx = "^0.24"
+
+# Optional: live reload for dev
+watchdog = "^3.0"
+python-dotenv = "^1.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.0"
+mypy = "^1.8"
+ruff = "^0.3"
+pytest = "^8.0"

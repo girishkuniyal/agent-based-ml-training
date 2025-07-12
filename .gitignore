@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+.env
+
+# Jupyter
+.ipynb_checkpoints
+
+# VSCode / IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# Model files & artifacts
+*.joblib
+*.pkl
+usecases/*/model.joblib
+usecases/*/model_metrics.csv
+usecases/*/*.csv
+usecases/*/__pycache__/
+
+# Uvicorn PID or logs
+*.pid
+*.log
+
+# Streamlit cache
+.streamlit/
+
+# Mac OS
+.DS_Store
