@@ -3,6 +3,7 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
+from utils.sqlite_db import log_llm_call
 import os
 from dotenv import load_dotenv
 
@@ -51,7 +52,7 @@ Valid: True or False
 Only return the `[RESULT]` and `[REASON]` sections. Do not add any other text.
 """
 
-def validate_code(training_file: str):
+def validate_code(training_file: str, usecase_name: str):
     with open(training_file, "r") as f:
         code = f.read()
 
@@ -65,7 +66,16 @@ def validate_code(training_file: str):
     llm = ChatOpenAI(temperature=0.1, model="gpt-4o",
                      openai_api_key=openai_key)
     chain = prompt | llm | StrOutputParser()
-    response = chain.invoke({"code": code})
+
+    retries = 0
+    while retries < 3:
+      try:
+        response = chain.invoke({"code": code})
+      except Exception as e:
+        retries += 1
+        time.sleep(1)
+
+    log_llm_call(usecase_name, prompt, response, success=True, retries=retries)
 
     # Parse result block from LLM response
     valid_flag = "valid: true" in response.lower()

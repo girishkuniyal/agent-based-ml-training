@@ -3,7 +3,10 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 import os
+import time
 from dotenv import load_dotenv
+from utils.sqlite_db import log_llm_call
+
 
 load_dotenv()  # Load variables from .env into environment
 
@@ -91,7 +94,18 @@ def generate_training_code(intent, target_col, model_type, usecase_name,
         train_model_code = train_model_code
     )
 
-    result = llm.predict(prompt_text)
+    retries = 0
+    while retries < 3:
+      try:
+        result = llm.predict(prompt_text)
+      except Exception as e:
+        retries += 1
+        time.sleep(1)
+
+    log_llm_call(usecase_name, prompt, result, success=True, retries=retries)
+
+
+    
 
     clean_result = clean_generated_code(result)
 

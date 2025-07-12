@@ -53,7 +53,7 @@ def run_agentic_code_generation(
         print(f"[Agent Loop] Attempt {attempt}/{max_retries} → {usecase_name}")
 
         # Step 2: Validate the generated code
-        is_valid, error_log = validate_code(training_file)
+        is_valid, error_log = validate_code(training_file, usecase_name)
 
         if is_valid:
             print("Validation Passed — Training Code Ready.")

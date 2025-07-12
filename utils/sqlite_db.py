@@ -9,6 +9,23 @@ DB_PATH = Path("db/app_state.sqlite")
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
+def init_llm_log_table():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS llm_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usecase TEXT,
+            prompt TEXT,
+            response TEXT,
+            success INTEGER,
+            retries INTEGER,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.commit()
+    conn.close()
+
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
@@ -26,6 +43,19 @@ def init_db():
     );
 
     """)
+    conn.commit()
+    conn.close()
+    init_llm_log_table()
+
+
+
+def log_llm_call(usecase: str, prompt: str, response: str, success: bool, retries: int):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO llm_logs (usecase, prompt, response, success, retries)
+        VALUES (?, ?, ?, ?, ?)
+    """, (usecase, prompt, response, int(success), retries))
     conn.commit()
     conn.close()
 
