@@ -94,6 +94,7 @@ poetry run streamlit run main.py
 ✅ Expanding ML Use Case Coverage: Scalable templates and code for supervised, unsupervised, time-series, and custom ML pipelines.
 
 ✅ Robust Persistent State Management: SQLite/PostgreSQL-based unified storage for tracking metadata, endpoints, and pipeline states.
+
 ---
 
 ## 🤝 Contributing
