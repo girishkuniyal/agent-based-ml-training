@@ -23,10 +23,8 @@ env/
 # Model files & artifacts
 *.joblib
 *.pkl
-# usecases/*/model.joblib
-# usecases/*/experiment_*.json
-# usecases/*/*.csv
-# usecases/*/__pycache__/
+usecases/
+db/
 
 # Uvicorn PID or logs
 *.pid

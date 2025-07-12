@@ -1,1 +1,0 @@
-{"RandomForestClassifier": {"best_params": {"classifier__n_estimators": 50}, "train_score": 1.0, "test_score": 1.0, "evaluation_metric": "accuracy"}}
