@@ -79,7 +79,7 @@ poetry run streamlit run main.py
 
 ✅ Advanced Model Versioning & Rollback: Seamless version control with revert capability and model lineage tracking.
 
-✅ Cloud-Native Deployments: Plug-and-play deployment across GCP, AWS, and Azure with autoscaling and CI/CD hooks.
+✅ Cloud-Native Deployments: Plug-and-play deployment across GCP, AWS, and Azure with autoscaling, CI/CD and Containerization.
 
 ✅ Visual Workflow Orchestration: Drag-and-drop GUI to define, chain, and monitor ML pipelines end-to-end.
 
