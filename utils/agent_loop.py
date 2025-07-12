@@ -22,7 +22,7 @@ def run_agentic_code_generation(
     schema_dict: dict,
     target_col: str,
     model_type: str = "auto",
-    max_retries: int = 20
+    max_retries: int = 10
 ):
     """
     Main loop: Generates ML training pipeline via agent, validates it,
@@ -66,7 +66,7 @@ def run_agentic_code_generation(
         log_validation_errors(validation_log, attempt, error_log)
 
     else:
-        print(f"❌ Failed to generate valid training code after {max_retries} retries for: {usecase_name}")
+        print(f"❌ Failed to generate completely valid training code after {max_retries} fixing retries for: {usecase_name}")
 
     # Step 4: Render serve.py file using template
     serve_code = render_serve_template(usecase_name, schema_dict)

@@ -15,7 +15,7 @@ def render_serve_template(usecase_name: str, schema_dict: dict) -> str:
 from pydantic import BaseModel
 import pandas as pd
 import joblib
-from usecases.{{ usecase_name }}.train_model import predict_preprocessing
+from utils.sqlite_db import increment_hit
 
 app = FastAPI()
 model = joblib.load("usecases/{{ usecase_name }}/model.joblib")
@@ -27,13 +27,19 @@ class InputSchema(BaseModel):
 
 @app.post("/predict")
 def predict(input: InputSchema):
-    try:
-        processed_input = predict_preprocessing(input)
-        input_df = pd.DataFrame([processed_input.dict()])
-        prediction = model.predict(input_df)[0]
-        return {"prediction": prediction}
-    except Exception as e:
-        return {"error": str(e)}
+    # Convert Pydantic model to DataFrame
+    input_df = pd.DataFrame([input.dict()])
+
+    # Predict using the loaded pipeline (which includes preprocessing + model)
+    prediction = model.predict(input_df)[0]
+                        
+    increment_hit("{{ usecase_name }}")
+
+    return {"prediction": prediction}
+                        
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "usecase": "{{ usecase_name }}"}
 ''')
 
     # Ensure proper type mapping for pydantic

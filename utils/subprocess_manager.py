@@ -4,35 +4,36 @@ import signal
 import time
 import requests
 from typing import Dict
+import os
 
 PROCESS_REGISTRY: Dict[str, subprocess.Popen] = {}
 
 
-def launch_uvicorn(usecase_name: str, module_path: str, port: int) -> bool:
+def launch_uvicorn(usecase_name: str, module_path: str, port: int) -> subprocess.Popen | None:
     try:
         proc = subprocess.Popen([
             "uvicorn", module_path, "--host", "0.0.0.0", "--port", str(port)
         ])
         PROCESS_REGISTRY[usecase_name] = proc
-        return True
+        return proc
     except Exception as e:
         print(f"Failed to launch {usecase_name}: {e}")
-        return False
+        return None
 
 
-def stop_uvicorn(usecase_name: str) -> bool:
-    proc = PROCESS_REGISTRY.get(usecase_name)
-    if not proc:
-        print(f"No process found for {usecase_name}")
-        return False
+def stop_uvicorn(pid: int) -> bool:
     try:
-        proc.send_signal(signal.SIGINT)
-        proc.wait(timeout=5)
-        del PROCESS_REGISTRY[usecase_name]
+        # SIGINT allows for graceful shutdown of Uvicorn
+        os.kill(pid, signal.SIGINT)
+        time.sleep(2)
         return True
-    except Exception as e:
-        print(f"Failed to stop {usecase_name}: {e}")
+    except ProcessLookupError:
+        print(f"No process found with PID: {pid}")
         return False
+    except Exception as e:
+        print(f"Failed to stop process {pid}: {e}")
+        return False
+
 
 
 def check_health(port: int) -> bool:

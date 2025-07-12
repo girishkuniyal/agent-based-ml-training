@@ -21,22 +21,25 @@ def init_db():
         status TEXT,
         api_hits INTEGER DEFAULT 0,
         model_type TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        pid INTEGER
     );
+
     """)
     conn.commit()
     conn.close()
 
 
-def register_usecase(name: str, path: str, port: int, model_type: str):
+def register_usecase(name: str, path: str, port: int, model_type: str, pid: Optional[int] = None):
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
-        INSERT OR REPLACE INTO usecases (name, path, port, status, model_type)
-        VALUES (?, ?, ?, 'running', ?)
-    """, (name, path, port, model_type))
+        INSERT OR REPLACE INTO usecases (name, path, port, status, model_type, pid)
+        VALUES (?, ?, ?, 'running', ?, ?)
+    """, (name, path, port, model_type, pid))
     conn.commit()
     conn.close()
+
 
 
 def update_status(name: str, status: str):
@@ -75,3 +78,21 @@ def get_usecase(name: str) -> Optional[tuple]:
     result = cur.fetchone()
     conn.close()
     return result
+
+def update_pid(name: str, pid: Optional[int]):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        UPDATE usecases SET pid=? WHERE name=?
+    """, (pid, name))
+    conn.commit()
+    conn.close()
+
+
+def get_pid(name: str) -> Optional[int]:
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT pid FROM usecases WHERE name=?", (name,))
+    row = cur.fetchone()
+    conn.close()
+    return row[0] if row and row[0] is not None else None

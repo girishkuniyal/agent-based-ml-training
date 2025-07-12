@@ -1,111 +1,102 @@
-# Agent-Based ML Training Demo
+# ⚡ Text2Model: Describe your use case, get a deployed model
 
-This is a mini-project inspired by [Plexe](https://plexe.ai) — a Y Combinator startup building open-source AI agents to train and deploy ML models from a natural language prompt.
+**Text2Model** lets you build production-grade machine learning models from just plain English. Upload your dataset, describe your intent, and we’ll take care of the rest — from generating model code to training, tuning, and deploying your model as a fully working REST API.
 
-The goal of this demo is to simulate how an AI agent can take in an `intent` and a dataset, autonomously build a machine learning model, and serve predictions over a REST API — all in one smooth pipeline.
+🚀 Say goodbye to boilerplate and infrastructure headaches — Text2Model is the fastest way to go from CSV to prediction endpoint.
 
----
-
-## What It Does
-
-1. **Understand Intent**
-   The agent interprets the task described in plain English.
-
-2. **Load & Preprocess Data**
-   Cleans the CSV, handles missing values, encodes categoricals, and prepares train/test splits.
-
-3. **Train a Predictive Model**
-   Based on the problem type inferred from the intent, the agent selects and trains a suitable ML algorithm.
-
-4. **Serve the Model via API**
-   A FastAPI service exposes an `/infer` endpoint where users can get real-time predictions.
+Note : Its a just basic demo POC for learning purpose. 
 
 ---
 
-## Example Usage
+## ✨ Features
 
-### Step 1: Build the Model
-
-```python
-from agent import build
-
-build(
-    intent="Predict if a customer will buy again",
-    data_path="user_transactions.csv"
-)
-```
-
-This triggers:
-
-* Dataset loading and cleaning
-* Classification model training (XGBoost or Logistic Regression)
-* Model saved as `model.joblib`
+* 🧠 **Plain English to Model**: Just describe your ML use case — we generate the full training code automatically.
+* 🧪 **Auto Model Selection & Tuning**: Automatically chooses the best model and hyperparameters.
+* 🚀 **One-Click Deployment**: Exposes your trained model instantly via REST API with OpenAPI docs.
+* 📊 **Test Interface**: Built-in UI to test prediction APIs instantly.
+* 🔄 **Persistent Use Cases**: Models stay available even after system restarts.
 
 ---
 
-### 🛁 Step 2: Run the Inference API
+## 🛠️ Getting Started
+
+### 1. Clone the Repo
 
 ```bash
-uvicorn serve:app --reload
+git clone https://github.com/yourusername/agentic-ml.git
+cd agentic-ml
 ```
 
-#### POST `/infer`
+### 2. Set up Environment
 
-```json
-{
-  "user_id": "U123",
-  "total_spent": 4213,
-  "days_since_last_purchase": 45
-}
+```bash
+pip install poetry
+poetry install
 ```
 
-#### Response
+### 3. Add OpenAI API Key
 
-```json
-{
-  "prediction": 1,
-  "confidence": 0.87
-}
+Create a `.env` file in the project root:
+
+```env
+OPENAI_API_KEY=your_openai_key_here
+```
+
+### 4. Run the App
+
+```bash
+poetry run streamlit run main.py
 ```
 
 ---
 
-## Project Structure
+## 🧱 Architecture Overview
 
-TODO
+```
+[User Input via Streamlit UI]
+      ↓
+[Schema Extraction from CSV]
+      ↓
+[Code Generation via LLM Agent (prompt + context)]
+      ↓
+[Model Training and Evaluation (AutoML)]
+      ↓
+[FastAPI App Generation per Use Case]
+      ↓
+[Serve via Uvicorn + REST Endpoint]
+```
 
----
-
-## Tech Stack
-
-| Component      | Technology                                  |
-| -------------- | ------------------------------------------- |
-| Language       | Python 3.9+                                 |
-| Model Training | Scikit-learn / XGBoost                      |
-| API Server     | FastAPI                                     |
-| Model Serving  | joblib                                      |
-| Agent Logic    | (Simple rule-based) or optionally LangChain |
-| Dataset        | Synthetic tabular data                      |
-
----
-
-## Why This Demo?
-
-Plexe’s vision of reducing ML development from *months to hours* through agentic workflows is really interesting, challenging and game-changing. This demo shows about:
-
-* Multi-agent orchestration for ML pipelines
-* Seamless data-to-deployment flows
-* Developer-first tools with clean, composable interfaces
-
-I’d love to contribute to challenging ai problem — both as an engineer and product thinker. This repo is a starting point.
+* **Model Registry**: SQLite-based tracking of models, ports, statuses, and hits.
+* **Persistent Deployments**: PIDs stored in DB for safe start/stop handling.
+* **Health Monitoring**: Every model has a `/health` endpoint.
+* **Custom JSON Schema**: Automatically derived from uploaded CSV.
 
 ---
 
-## Contact
+## 🚧 Future Scope & Improvements
 
-**Girish Kuniyal**
-[LinkedIn](https://linkedin.com/in/girishchandra1)
+* ✅ Add support for Large context and bigger codebase 
+* ✅ Enable robust model versioning and rollback
+* ✅ Cloud-native deployment (GCP/AWS support)
+* ✅ Drag-and-drop GUI for workflow chaining
+* ✅ Webhook/Slack alerts on training/deploy completion
+* ✅ Better error handling
+* ✅ Concept of semantic cache 
+* ✅ Advance and compled Generator-Validator agent 
+* ✅ Cover scope and code for wide variety of ML usecase
 
 ---
 
-> Built with ❤️ from India. Open to feedback, improvements, and collaboration!
+## 🤝 Contributing
+
+We welcome contributions! Please open issues or submit PRs for suggestions, improvements, or bug fixes.
+
+---
+
+## 🪪 License
+
+MIT License
+
+---
+
+Made with ❤️ by \[Girish]
