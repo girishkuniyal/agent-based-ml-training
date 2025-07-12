@@ -1,0 +1,12 @@
+{
+  "input_format": {
+    "Id": "int",
+    "SepalLengthCm": "float",
+    "SepalWidthCm": "float",
+    "PetalLengthCm": "float",
+    "PetalWidthCm": "float"
+  },
+  "output_format": {
+    "prediction": "str"
+  }
+}
