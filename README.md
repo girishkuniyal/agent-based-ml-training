@@ -109,4 +109,4 @@ MIT License
 
 ---
 
-Made with ❤️ by \[Girish]
+Made with ❤️ by Girish
