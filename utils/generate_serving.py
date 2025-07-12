@@ -11,15 +11,14 @@ def render_serve_template(usecase_name: str, schema_dict: dict) -> str:
     Returns:
         str: Rendered FastAPI code for the given use case.
     """
-    template = Template("""
-from fastapi import FastAPI
+    template = Template('''from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
 import joblib
-from train_model import predict_preprocessing
+from usecases.{{ usecase_name }}.train_model import predict_preprocessing
 
 app = FastAPI()
-model = joblib.load("{{ usecase_name }}/model.joblib")
+model = joblib.load("usecases/{{ usecase_name }}/model.joblib")
 
 class InputSchema(BaseModel):
 {% for field, dtype in schema.items() %}
@@ -28,11 +27,14 @@ class InputSchema(BaseModel):
 
 @app.post("/predict")
 def predict(input: InputSchema):
-    processed_input = predict_preprocessing(input)
-    input_df = pd.DataFrame([processed_input.dict()])
-    prediction = model.predict(input_df)[0]
-    return {"prediction": prediction}
-""")
+    try:
+        processed_input = predict_preprocessing(input)
+        input_df = pd.DataFrame([processed_input.dict()])
+        prediction = model.predict(input_df)[0]
+        return {"prediction": prediction}
+    except Exception as e:
+        return {"error": str(e)}
+''')
 
     # Ensure proper type mapping for pydantic
     type_mapping = {

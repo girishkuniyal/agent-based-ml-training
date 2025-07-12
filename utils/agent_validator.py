@@ -3,6 +3,7 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
+import os
 from dotenv import load_dotenv
 
 load_dotenv()  # Load variables from .env into environment
@@ -22,6 +23,7 @@ Your job is to:
 - Determine if it's ready for production use.
 
 A good production-ready training script should:
+- correct syntax and logic
 - Handle missing/null values and categorical encoding
 - Use proper train-test split with seed
 - Select model type based on task (regression/classification)
@@ -29,6 +31,7 @@ A good production-ready training script should:
 - Use sklearn pipelines if possible
 - Save model to disk
 - Avoid unnecessary global state or bad practices
+- No additonal text or comments
 
 Your output MUST follow this format:
 
@@ -43,7 +46,7 @@ Valid: True or False
         ("human", "Here is the code to review:\n\n{code}")
     ])
 
-    llm = ChatOpenAI(temperature=0, model="gpt-4",
+    llm = ChatOpenAI(temperature=0.1, model="gpt-4",
                      openai_api_key=openai_key)
     chain = prompt | llm | StrOutputParser()
     response = chain.invoke({"code": code})

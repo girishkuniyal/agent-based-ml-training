@@ -42,7 +42,7 @@ def train_model(csv_path, target_col, model_output_path, model_type="auto", usec
     joblib.dump(model_object, model_output_path)
 
     return {
-        "model_type": model_name,
+        "model_name": model_name,
         "train_score": train_score,
         "test_score": test_score,
         "metric": metric

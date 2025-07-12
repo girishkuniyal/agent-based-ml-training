@@ -4,12 +4,18 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 import os
 from dotenv import load_dotenv
-import os
 
 load_dotenv()  # Load variables from .env into environment
 
 # Now this will work as expected
 openai_key = os.getenv("OPENAI_API_KEY")
+
+def clean_generated_code(code: str) -> str:
+    return (
+        code.replace("```python", "")
+            .replace("```", "")
+            .strip()
+    )
 
 TEMPLATE = """
 You're a senior ML engineer.
@@ -17,11 +23,13 @@ Based on the use case intent and schema, generate Python code that trains a mode
 Ensure the code is production-ready and robust, supporting both classification and regression.
 
 ### Metadata
-- Input CSV path: {csv_path}
 - Target column: {target_col}
-- Model type: {model_type}
+- Model type (auto, classification, regression): {model_type}
 - Usecase folder: usecases/{usecase_name}
 - Schema: {schema_dict}
+
+### ML Modeling Intent
+{intent}
 
 ### Requirements
 1. Automatically handle preprocessing:
@@ -52,38 +60,49 @@ Ensure the code is production-ready and robust, supporting both classification a
 
 ### Best Practices
 - Write clean, modular code
+- Always import libraries using their latest supported code for Python 3.8+ and the latest stable versions of libraries (e.g., scikit-learn >= 1.0, pandas, xgboost, joblib, etc.).
+
+
 
 ### Error to fix (if any):
 {error_log}
 
-Only return valid and executable Python code for `train_model.py`.
+
+### Already existing code (if any):
+{train_model_code}
+
+Note: Only return valid and executable Python code. Do not include any additonal text, markdown or triple backticks.
+
 """
 
 prompt = PromptTemplate(
-    input_variables=["csv_path", "target_col", "model_type", "usecase_name", "schema_dict", "error_log"],
+    input_variables=["target_col", "model_type", "usecase_name", "schema_dict", "error_log", "train_model_code"],
     template=TEMPLATE
 )
 
-llm = ChatOpenAI(temperature=0, model_name="gpt-4",
+llm = ChatOpenAI(temperature=0.1, model_name="gpt-4",
                  openai_api_key=openai_key)
 
-def generate_training_code(csv_path, target_col, model_type, usecase_name, 
-                           schema_dict, error_log):
+def generate_training_code(intent, target_col, model_type, usecase_name, 
+                           schema_dict, error_log, train_model_code):
     prompt_text = prompt.format(
-        csv_path=csv_path,
+        intent=intent,
         target_col=target_col,
         model_type=model_type,
         usecase_name=usecase_name,
         schema_dict=schema_dict,
-        error_log=error_log  
+        error_log=error_log ,
+        train_model_code = train_model_code
     )
 
     result = llm.predict(prompt_text)
+
+    clean_result = clean_generated_code(result)
 
     # Save generated code to train_model.py
     usecase_dir = f"usecases/{usecase_name}"
     os.makedirs(usecase_dir, exist_ok=True)
     with open(os.path.join(usecase_dir, "train_model.py"), "w") as f:
-        f.write(result)
+        f.write(clean_result)
 
-    return result
+    return clean_result

@@ -1,6 +1,6 @@
 usecase_name : iris_prediction
 
-Goal : Predict flower species based on metric of flower.
+Goal : Predict flower species based on metric of flower. its a classification problem.
 data schema:
 ===========
 id : identity column/index
