@@ -5,6 +5,7 @@
 🚀 Say goodbye to boilerplate and infrastructure headaches — Text2Model is the fastest way to go from CSV to prediction endpoint.
 
 > 📽️ **Watch Demo**: [Click here to see it in action](https://www.youtube.com/watch?v=fmmTLo7SlBg&ab_channel=GIRISHkuniyal)
+
 > 🖼️ **Screenshot**:
 > ![Demo Screenshot](resource/ui_demo.png)
 
