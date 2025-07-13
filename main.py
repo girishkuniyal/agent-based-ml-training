@@ -56,8 +56,8 @@ if trigger_btn and uploaded_file and target_col:
 
     with st.status(f"🤖 Generating ML code for `{usecase_name_input}`...", expanded=True) as status:
         schema_dict = build_schema_from_csv(csv_path, usecase_name, target_col)
-        #run_agentic_code_generation(usecase_name, intent, schema_dict, target_col, model_type)
-        time.sleep(10)
+        run_agentic_code_generation(usecase_name, intent, schema_dict, target_col, model_type)
+        #time.sleep(10)
         status.update(label="✅ Code generated", state="complete")
 
     with st.status(f"🧠 Training model for `{usecase_name_input}`...", expanded=True) as status:
