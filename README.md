@@ -42,7 +42,7 @@ poetry shell
 
 ### 3. Add OpenAI API Key
 
-Create a `.env` file in the project root:
+Create an openai api key and save it in `.env` file in the project root:
 
 ```env
 OPENAI_API_KEY=your_openai_key_here
