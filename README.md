@@ -28,8 +28,8 @@
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/yourusername/agentic-ml.git
-cd agentic-ml
+git clone https://github.com/yourusername/agent-based-ml-training.git
+cd agent-based-ml-training
 ```
 
 ### 2. Set up Environment
