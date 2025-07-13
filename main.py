@@ -16,7 +16,7 @@ from utils.subprocess_manager import launch_uvicorn, stop_uvicorn, check_health
 
 st.set_page_config(page_title="⚡ Agentic ML Model Trainer", layout="wide")
 st.title("⚡ Build, Train & Deploy Production ML Models Instantly")
-st.caption("Built with ❤️ | Inspired by [Plexe.ai](https://plexe.ai/)")
+st.caption("Built with ❤️ by Girish | Inspired by [Plexe.ai](https://plexe.ai/)")
 
 with st.container():
     st.markdown("""
@@ -72,6 +72,7 @@ if trigger_btn and uploaded_file and target_col:
         register_usecase(usecase_name, usecase_path, port, result['model_name'], proc.pid)
     else:
         st.error("🚫 Failed to deploy API server")
+    time.sleep(5)  # Wait for server to start
 
 # Step 4: Show deployed use cases
 st.markdown("---")
@@ -90,12 +91,13 @@ if not usecases:
 for name, port, status_val, api_hits, model_type in usecases:
     # Determine status
     manual_interaction = st.session_state.start_clicked.get(name) or st.session_state.stop_clicked.get(name)
+    
+    is_live = check_health(port)
+    status = "live" if is_live else "offline"
+    
     if not manual_interaction:
-        is_live = check_health(port)
-        status = "live" if is_live else "offline"
         update_status(name, status)
     else:
-        status = status_val
         is_live = status == "live"
 
     st.session_state.start_clicked[name] = False

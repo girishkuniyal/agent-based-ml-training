@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from utils.sqlite_db import log_llm_call
 
 
-load_dotenv()  # Load variables from .env into environment
+load_dotenv()  
 
 # Now this will work as expected
 openai_key = os.getenv("OPENAI_API_KEY")
@@ -19,6 +19,9 @@ def clean_generated_code(code: str) -> str:
             .replace("```", "")
             .strip()
     )
+
+
+
 
 TEMPLATE = """
 You are a senior ML engineer.
@@ -94,15 +97,10 @@ def generate_training_code(intent, target_col, model_type, usecase_name,
         train_model_code = train_model_code
     )
 
-    retries = 0
-    while retries < 3:
-      try:
-        result = llm.predict(prompt_text)
-      except Exception as e:
-        retries += 1
-        time.sleep(1)
 
-    log_llm_call(usecase_name, prompt, result, success=True, retries=retries)
+    result = llm.predict(prompt_text)
+
+    log_llm_call(usecase_name, prompt_text, result, success=True, retries=0)
 
 
     

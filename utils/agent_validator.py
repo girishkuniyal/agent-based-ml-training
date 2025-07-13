@@ -2,6 +2,7 @@
 
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+from langchain.schema.messages import SystemMessage, HumanMessage, AIMessage
 from langchain.schema.output_parser import StrOutputParser
 from utils.sqlite_db import log_llm_call
 import os
@@ -12,6 +13,17 @@ load_dotenv()  # Load variables from .env into environment
 # Now this will work as expected
 openai_key = os.getenv("OPENAI_API_KEY")
 
+
+
+def get_role(message):
+    if isinstance(message, SystemMessage):
+        return "SYSTEM"
+    elif isinstance(message, HumanMessage):
+        return "HUMAN"
+    elif isinstance(message, AIMessage):
+        return "AI"
+    else:
+        return "UNKNOWN"
 
 VALIDATOR_TEMPLATE = """
 You are a senior MLOps engineer responsible for validating Python training scripts for tabular ML use cases.
@@ -63,19 +75,18 @@ def validate_code(training_file: str, usecase_name: str):
         ("human", "Here is the code to review:\n\n{code}")
     ])
 
+    input_dict = {"code": code}
+    rendered_prompt = prompt.format_messages(**input_dict)
+    prompt_str = "\n\n".join([f"{get_role(m)}: {m.content}" for m in rendered_prompt])
+
+
     llm = ChatOpenAI(temperature=0.1, model="gpt-4o",
                      openai_api_key=openai_key)
     chain = prompt | llm | StrOutputParser()
 
-    retries = 0
-    while retries < 3:
-      try:
-        response = chain.invoke({"code": code})
-      except Exception as e:
-        retries += 1
-        time.sleep(1)
+    response = chain.invoke({"code": code})
 
-    log_llm_call(usecase_name, prompt, response, success=True, retries=retries)
+    log_llm_call(usecase_name, prompt_str, response, success=True, retries=0)
 
     # Parse result block from LLM response
     valid_flag = "valid: true" in response.lower()

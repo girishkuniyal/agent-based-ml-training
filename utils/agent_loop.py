@@ -28,6 +28,8 @@ def run_agentic_code_generation(
     Main loop: Generates ML training pipeline via agent, validates it,
     retries with fixes until validation passes, and finally generates a FastAPI serve file.
     """
+    print(f"[Agent Loop] Code generateion started for: {usecase_name}")
+
     usecase_path = f"usecases/{usecase_name}"
     os.makedirs(usecase_path, exist_ok=True)
     error_log = None
@@ -35,7 +37,6 @@ def run_agentic_code_generation(
 
     training_file = os.path.join(usecase_path, "train_model.py")
     validation_log = os.path.join(usecase_path, "validation_errors.log")
-
 
     for attempt in range(1, max_retries + 1):
         # Step 1: Generate training code
