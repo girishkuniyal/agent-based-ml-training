@@ -7,7 +7,7 @@
 > 📽️ **Watch Demo**: [Click here to see it in action](https://www.youtube.com/watch?v=fmmTLo7SlBg&ab_channel=GIRISHkuniyal)
 
 > 🖼️ **Screenshot**:
-> ![Demo Screenshot](resource/ui_demo.png)
+> ![Demo Screenshot](resource/ui_demo.gif)
 
 > 🧪 *Note: This is a basic POC demo project created for learning and showcasing agentic ML pipelines.*
 
