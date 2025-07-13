@@ -28,7 +28,7 @@
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/yourusername/agent-based-ml-training.git
+git clone https://github.com/girishkuniyal/agent-based-ml-training.git
 cd agent-based-ml-training
 ```
 
