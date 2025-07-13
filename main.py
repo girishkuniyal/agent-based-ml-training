@@ -56,8 +56,8 @@ if trigger_btn and uploaded_file and target_col:
 
     with st.status(f"🤖 Generating ML code for `{usecase_name_input}`...", expanded=True) as status:
         schema_dict = build_schema_from_csv(csv_path, usecase_name, target_col)
-        # run_agentic_code_generation(usecase_name, intent, schema_dict, target_col, model_type)
-        time.sleep(10)
+        run_agentic_code_generation(usecase_name, intent, schema_dict, target_col, model_type)
+        # time.sleep(10)
         status.update(label="✅ Code generated", state="complete")
 
     with st.status(f"🧠 Training model for `{usecase_name_input}`...", expanded=True) as status:
@@ -67,13 +67,16 @@ if trigger_btn and uploaded_file and target_col:
     st.success(f"🏆 Best Model: `{result['model_name']}` | `{result['metric']}` = Test: `{result['test_score']}` | Train: `{result['train_score']}`")
 
     port = 8000 + (abs(hash(usecase_name)) % 1000)
-    proc = launch_uvicorn(usecase_name, f"usecases.{usecase_name}.serve:app", port)
+    
+    with st.status(f"📡 Deploying model for `{usecase_name_input}`...", expanded=True) as status:
+        proc = launch_uvicorn(usecase_name, f"usecases.{usecase_name}.serve:app", port)
 
-    if proc:
-        register_usecase(usecase_name, usecase_path, port, result['model_name'], proc.pid)
-    else:
-        st.error("🚫 Failed to deploy API server")
-    time.sleep(5)  # Wait for server to start
+        if proc:
+            register_usecase(usecase_name, usecase_path, port, result['model_name'], proc.pid)
+        else:
+            st.error("🚫 Failed to deploy API server")
+        time.sleep(5)  # Wait for server to start
+        status.update(label="✅ Model Deployed", state="complete")
 
 # Step 4: Show deployed use cases
 st.markdown("---")
