@@ -52,7 +52,14 @@ if trigger_btn and uploaded_file and target_col:
 
     csv_path = os.path.join(usecase_path, "training_data.csv")
     with open(csv_path, "wb") as f:
-        f.write(uploaded_file.read())
+        # Read and fix only the first line (header)
+        header = uploaded_file.readline().decode("utf-8").strip().replace(" ", "_")
+        f.write((header + "\n").encode("utf-8"))
+
+        # Stream the rest directly without loading into memory
+        while chunk := uploaded_file.read(1024 * 1024):  # 1MB chunks
+            f.write(chunk)
+
 
     with st.status(f"🤖 Generating ML code for `{usecase_name_input}`...", expanded=True) as status:
         schema_dict = build_schema_from_csv(csv_path, usecase_name, target_col)

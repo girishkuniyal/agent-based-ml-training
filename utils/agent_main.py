@@ -43,7 +43,7 @@ Output Expectations:
 
 2. Preprocessing:
    - Handle missing values
-   - Remove identity columns
+   - Remove identity columns and column with no name or only spaces
    - Encode categorical features
    - Scale numerical features
    - Build a `Pipeline` with `ColumnTransformer` where needed

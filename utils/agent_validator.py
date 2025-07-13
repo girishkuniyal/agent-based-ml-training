@@ -35,6 +35,7 @@ Your job is to:
 
 A production-grade training script **must**:
 - Be syntactically correct and logically sound
+- Validate the data tranformations and data handling steps.
 - Handle missing/null values properly
 - Encode categorical variables appropriately
 - Perform train-test split using a fixed `random_state`
