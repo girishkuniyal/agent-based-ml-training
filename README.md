@@ -37,6 +37,7 @@ cd agent-based-ml-training
 ```bash
 pip install poetry
 poetry install
+poetry shell
 ```
 
 ### 3. Add OpenAI API Key
