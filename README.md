@@ -20,6 +20,8 @@
 * 🚀 **One-Click Deployment**: Exposes your trained model instantly via REST API with OpenAPI docs.
 * 📊 **Test Interface**: Built-in UI to test prediction APIs instantly.
 * 🔄 **Persistent Use Cases**: Models stay available even after system restarts.
+  
+Note: This currently support standard Regression/Classification problem which build around sklearn tech stack.
 
 ---
 
