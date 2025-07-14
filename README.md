@@ -21,7 +21,7 @@
 * 📊 **Test Interface**: Built-in UI to test prediction APIs instantly.
 * 🔄 **Persistent Use Cases**: Models stay available even after system restarts.
   
-Note: This currently support standard Regression/Classification problem which build around sklearn tech stack.
+Note: This demo currently support standard Regression/Classification problem which build around sklearn tech stack. it suits well for usecase which required less than 500 lines of code.
 
 ---
 
